@@ -1,0 +1,19 @@
+Name: Timothy Campbell
+
+Clemson Email Address: tcampb2@g.clemson.edu
+
+Project no: 4
+
+Project due date: 11/13/17
+
+Project description: The goal of the project is to edit the MyPy parser to handle integer
+and floating point arithmetic, as well as assignment in the global scope. This is done
+by creating an abstract syntax tree. This is to further familiarize ourselves with MyPy 
+and to help prepare for when we must also include functions.
+
+The easiest part of this project: Once I had the assignment operators and the expressions working,
+the extra forms of assignment were trivial.
+
+Problems that I had in completing this project: It took a while to figure out what each part of the parser did,
+since we were looking at a different part of the parser than in the third project. It's a bit
+weird to me how for, in, with, etc. are caught by the same rules that catch expressions in parentheses.
