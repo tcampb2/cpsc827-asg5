@@ -3,27 +3,43 @@
 #include "symbolTable.h"
 #include "literal.h"
 
-SymbolTable::~SymbolTable() {
-  for ( const Node* node : nodes ) {
-    delete node;
-  }
-}
-
 const Literal* SymbolTable::getValue(const std::string& name) const {
   std::map<std::string, const Literal*>::const_iterator it = 
     table.find(name);
-  if ( it == table.end() ) return nullptr;
+  if ( it == table.end() ){
+	if(parent != nullptr){
+		return parent->getValue(name);
+	}
+	else{
+		return nullptr;
+	}
+  }
   return it->second;
 }
 
 bool SymbolTable::hasValue(const std::string& name) const {
   std::map<std::string, const Literal*>::const_iterator it = 
     table.find(name);
-  if ( it == table.end() ) return true;
+  if ( it == table.end() ){
+	if(parent != nullptr){
+		return parent->hasValue(name);
+	}
+	else{
+		return false;
+	}
+  }
   return false;
 }
 
 void SymbolTable::setValue(const std::string& name, const Literal* val) { 
   table[name] = val;
+}
+
+void SymbolTable::endScope() {
+  for (std::map<std::string, const Literal*>::const_iterator it = table.begin(); it != table.end();) {
+    delete it->second;
+    table.erase(it);
+  }
+  table.clear();
 }
 

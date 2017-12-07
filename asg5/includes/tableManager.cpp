@@ -4,7 +4,9 @@
 #include "literal.h"
 
 TableManager::~TableManager() {
-  free(global);
+  for (std::vector<SymbolTable*>::const_iterator it = tablePool.begin(); it != tablePool.end(); it++) {
+    delete *it;
+  }
 }
 
 TableManager& TableManager::getInstance() {
@@ -13,29 +15,32 @@ TableManager& TableManager::getInstance() {
 }
 
 const Literal* TableManager::getValue(const std::string& name) const {
-  int n = tables.size() - 1;
-  while(n > 0){
-	if(tables[n]->hasValue(name)){
-		const Literal* answer = tables[n]->getValue(name);
-		if(answer == nullptr) throw name+std::string(" not found");
-		return answer;
-  	}
-  }
-  const Literal* answer = global->getValue(name);
-  if(answer == nullptr) throw name+std::string(" not found");
-  return answer;
+  return tableStack.top()->getValue(name);
 }
 
 void TableManager::setValue(const std::string& name, const Literal* val) { 
-  tables.back()->setValue(name, val);
+  tableStack.top()->setValue(name, val);
 }
 
-void TableManager::startScope(){
-  tables.emplace_back(new SymbolTable());
+SymbolTable * TableManager::newScope(SymbolTable * table){
+	if(table == nullptr){
+		SymbolTable * newTable = new SymbolTable(global);
+		tablePool.push_back(newTable);
+		return newTable;
+	}
+	else{
+		SymbolTable * newTable = new SymbolTable(table);
+		tablePool.push_back(newTable);
+		return newTable;
+	}
+}
+
+void TableManager::startScope(SymbolTable* table){
+  tableStack.push(table);
 }
 
 void TableManager::endScope(){
-  free(tables.back());
-  tables.pop_back();
+  tableStack.top()->endScope();
+  tableStack.pop();
 }
 

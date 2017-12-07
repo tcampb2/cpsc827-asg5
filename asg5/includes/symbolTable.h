@@ -10,14 +10,17 @@ class Literal;
 
 class SymbolTable {
 public:
-  SymbolTable() : table() {}
-  ~SymbolTable();
+  SymbolTable(const SymbolTable * p) : table(), parent(p) {}
+  //~SymbolTable();
   void  setValue(const std::string& name, const Literal* val);
   const Literal* getValue(const std::string& name) const;
-  bool hasValue(const std::string& name) const;
-  void add(const Node* node) { nodes.push_back(node); }
+  //bool hasValue(const std::string& name) const;
+  void endScope();
 private:
   std::map<std::string, const Literal*> table;
+  const SymbolTable * parent;
+  SymbolTable(const SymbolTable&) = delete;
+  SymbolTable& operator=(const SymbolTable&) = delete;
 };
 
 #endif
