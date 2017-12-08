@@ -105,6 +105,12 @@ public:
   virtual const Literal* eval() const;
 };
 
+class ReturnUnaryNode : public UnaryNode {
+public:
+  ReturnUnaryNode(Node* node) : UnaryNode(node) { }
+  virtual const Literal* eval() const;
+};
+
 class SuiteNode : public Node {
 public:
   SuiteNode() : Node(), nodes() {}

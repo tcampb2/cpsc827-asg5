@@ -105,6 +105,12 @@ public:
   virtual const Literal* eval() const;
 };
 
+class ReturnUnaryNode : public UnaryNode {
+public:
+  ReturnNode(Node* node) : UnaryNode(node) { }
+  virtual const Literal* eval() const;
+};
+
 class SuiteNode : public Node {
 public:
   SuiteNode() : Node(), nodes() {}
@@ -129,4 +135,14 @@ protected:
   std::string name;
   Node * suite;
   SymbolTable* table;
+};
+
+class CallNode : public Node {
+public:
+  CallNode(const std::string id) : Node(), ident(id) { } 
+  virtual ~CallNode() {}
+  const std::string getIdent() const { return ident; }
+  virtual const Literal* eval() const;
+private:
+  std::string ident;
 };

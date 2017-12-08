@@ -1,16 +1,17 @@
 def test():
 	print x
 
-x = 3
+x = 4%None
 print x
 def testing():
-	23 + x
+	x + 23
 	j = 1 * 7.4
 	print j
 	def check():
 		print 4
 		print x
 	check()	
-	r = 4
+	return 2.3**4
 	
-testing()
+print testing()
+return 4

@@ -6,31 +6,31 @@ class Literal : public Node {
 public:
   virtual ~Literal() {}
 
-  virtual const Literal* operator+(const Literal& rhs) const =0;
+  virtual const Literal* operator+(const Literal&) const =0;
   virtual const Literal* opPlus(float) const =0;
   virtual const Literal* opPlus(int) const =0;
 
-  virtual const Literal* operator*(const Literal& rhs) const =0;
+  virtual const Literal* operator*(const Literal&) const =0;
   virtual const Literal* opMult(float) const =0;
   virtual const Literal* opMult(int) const =0;
 
-  virtual const Literal* operator-(const Literal& rhs) const =0;
+  virtual const Literal* operator-(const Literal&) const =0;
   virtual const Literal* opSubt(float) const =0;
   virtual const Literal* opSubt(int) const =0;
 
-  virtual const Literal* operator/(const Literal& rhs) const =0;
+  virtual const Literal* operator/(const Literal&) const =0;
   virtual const Literal* opDiv(float) const =0;
   virtual const Literal* opDiv(int) const =0;
   
-  virtual const Literal* powFunc(const Literal& rhs) const =0;
+  virtual const Literal* powFunc(const Literal&) const =0;
   virtual const Literal* opPow(float) const =0;
   virtual const Literal* opPow(int) const =0;
 
-  virtual const Literal* divFloorFunc(const Literal& rhs) const =0;
+  virtual const Literal* divFloorFunc(const Literal&) const =0;
   virtual const Literal* opFloorDiv(float) const =0;
   virtual const Literal* opFloorDiv(int) const =0;
 
-  virtual const Literal* operator%(const Literal& rhs) const =0;
+  virtual const Literal* operator%(const Literal&) const =0;
   virtual const Literal* opMod(float) const =0;
   virtual const Literal* opMod(int) const =0;
   
@@ -198,7 +198,7 @@ private:
 
 class IntLiteral: public Literal {
 public:
- IntLiteral(int _val): val(_val) { std::cout<< _val << " value of int" << std::endl;}
+  IntLiteral(int _val): val(_val) {}
 
   virtual const Literal* operator+(const Literal& rhs) const  {
     return rhs.opPlus(val);
@@ -361,5 +361,50 @@ public:
   }
 private:
   int val;
+};
+
+class NoneLiteral: public Literal{
+public:
+  static NoneLiteral* getInstance() {
+    static NoneLiteral instance;
+    return &instance;
+  }
+
+  virtual const Literal* operator+(const Literal&) const {return this;}
+  virtual const Literal* opPlus(float) const {return this;}
+  virtual const Literal* opPlus(int) const {return this;}
+
+  virtual const Literal* operator*(const Literal&) const {return this;}
+  virtual const Literal* opMult(float) const {return this;}
+  virtual const Literal* opMult(int) const {return this;}
+
+  virtual const Literal* operator-(const Literal&) const {return this;}
+  virtual const Literal* opSubt(float) const {return this;}
+  virtual const Literal* opSubt(int) const {return this;}
+
+  virtual const Literal* operator/(const Literal&) const {return this;}
+  virtual const Literal* opDiv(float) const {return this;}
+  virtual const Literal* opDiv(int) const {return this;}
+  
+  virtual const Literal* powFunc(const Literal&) const {return this;}
+  virtual const Literal* opPow(float) const {return this;}
+  virtual const Literal* opPow(int) const {return this;}
+
+  virtual const Literal* divFloorFunc(const Literal&) const {return this;}
+  virtual const Literal* opFloorDiv(float) const {return this;}
+  virtual const Literal* opFloorDiv(int) const {return this;}
+
+  virtual const Literal* operator%(const Literal&) const {return this;}
+  virtual const Literal* opMod(float) const {return this;}
+  virtual const Literal* opMod(int) const {return this;}
+  
+  virtual const Literal* negate() const {return this;}
+
+  virtual const Literal* eval() const { return this; }
+  virtual void print() const { 
+    std::cout << "None" << std::endl;
+  }
+private:
+  NoneLiteral() {}
 };
 

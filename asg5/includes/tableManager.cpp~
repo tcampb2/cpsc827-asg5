@@ -5,7 +5,6 @@
 
 TableManager::~TableManager() {
   for (std::vector<SymbolTable*>::const_iterator it = tablePool.begin(); it != tablePool.end(); it++) {
-    { std::cout << "delete symbol table" << std::endl; }
     delete *it;
   }
 }

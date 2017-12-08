@@ -7,6 +7,7 @@
 	#include <iostream>
 	#include <map>
 	#include <cmath>
+	#include <string>
 	#include "includes/ast.h"
 
 	PoolOfNodes& pool = PoolOfNodes::getInstance();
@@ -51,7 +52,8 @@ pick_NEWLINE_stmt // Used in: star_NEWLINE_stmt
 	| stmt
 	{ FunctionNode * func = dynamic_cast<FunctionNode *>($<node>1);
 	  if(!func){
-	    std::cout << $<node>1 << " " << $<node>1->name() << std::endl; $<node>1->eval();
+	    std::cout << $<node>1 << " " << $<node>1->name() << std::endl; 
+	    $<node>1->eval();
 	  }
 	}//$<node>1->eval(); }
 	;
@@ -299,7 +301,15 @@ continue_stmt // Used in: flow_stmt
 	;
 return_stmt // Used in: flow_stmt
 	: RETURN testlist
+	{ $<node>$ = new ReturnUnaryNode($<node>2);
+	  pool.add($<node>$);
+	}
 	| RETURN
+	{ NoneLiteral * none = new NoneLiteral();
+	  pool.add(none);
+	  $<node>$ = new ReturnUnaryNode(none);
+	  pool.add($<node>$);
+	}
 	;
 yield_stmt // Used in: flow_stmt
 	: yield_expr
@@ -673,9 +683,15 @@ atom // Used in: power
 	| plus_STRING 
 	{ $<node>$ = nullptr; }
 	| NAME		
-	{ $<node>$ = new IdentNode($1);
-		delete[] $1;
-		pool.add($<node>$);
+	{ std::string s = $1;
+	  if(s == "None"){
+		$<node>$ = new NoneLiteral();
+	  }
+	  else{
+		$<node>$ = new IdentNode($1);
+	  }
+	  delete[] $1;
+	  pool.add($<node>$);
 	}
 	| INT		
 	{ $<node>$ = new IntLiteral($1);
