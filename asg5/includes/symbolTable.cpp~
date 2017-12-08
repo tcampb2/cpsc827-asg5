@@ -22,6 +22,9 @@ void SymbolTable::setValue(const std::string& name, const Literal* val) {
 }
 
 const Node* SymbolTable::getFunction(const std::string& name) const {
+  for (std::map<std::string, const Node*>::const_iterator it = functions.begin(); it != functions.end(); it++) {
+    std::cout << it->first << std::endl;
+  }
   std::map<std::string, const Node*>::const_iterator it = 
     functions.find(name);
   if ( it == functions.end() ){
@@ -35,7 +38,8 @@ const Node* SymbolTable::getFunction(const std::string& name) const {
   return it->second;
 }
 
-void SymbolTable::setFunction(const std::string& name, const Node* val) { 
+void SymbolTable::setFunction(const std::string& name, const Node* val) {
+  std::cout << name << std::endl; 
   functions[name] = val;
 }
 

@@ -130,3 +130,13 @@ protected:
   Node * suite;
   SymbolTable* table;
 };
+
+class CallNode : public Node {
+public:
+  CallNode(const std::string id) : Node(), ident(id) { } 
+  virtual ~CallNode() {}
+  const std::string getIdent() const { return ident; }
+  virtual const Literal* eval() const;
+private:
+  std::string ident;
+};

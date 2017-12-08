@@ -35,7 +35,7 @@ const Node* SymbolTable::getFunction(const std::string& name) const {
   return it->second;
 }
 
-void SymbolTable::setFunction(const std::string& name, const Node* val) { 
+void SymbolTable::setFunction(const std::string& name, const Node* val) {
   functions[name] = val;
 }
 

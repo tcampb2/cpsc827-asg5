@@ -206,7 +206,6 @@ star_EQUAL // Used in: expr_stmt, star_EQUAL
 	{ if(($<node>2 != nullptr) && ($<node>3 != nullptr)){
                 $<node>$ = new AsgBinaryNode($<node>2, $<node>3);
 		pool.add($<node>$);
-	        //$<node>$->eval();
 	  }
 	  else {
 	  	$<node>$ = $<node>2;
@@ -643,7 +642,14 @@ power // Used in: factor
 		$<node>$ = $<node>1;
 	  }
 	  else{
-		$<node>$ = nullptr;
+		IdentNode * funcName = dynamic_cast<IdentNode *>($<node>1);
+		if(!funcName){
+			throw "not a function";
+		}
+		std::cout << "function call" << std::endl;
+		$<node>$ = new CallNode(funcName->getIdent());
+		std::cout << "function call node" << std::endl;
+		pool.add($<node>$);
 	  }
 	}
 	;

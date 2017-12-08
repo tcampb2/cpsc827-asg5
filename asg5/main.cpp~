@@ -62,7 +62,7 @@ int main(int argc, char * argv[]) {
     	parse_had_errors = 1;
     }
   }
-  catch ( const char * msg ) {
+  catch ( const const * msg ) {
     std::cout << "oops: " << msg << std::endl;
     parse_had_errors = 1;
   }

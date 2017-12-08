@@ -119,7 +119,10 @@ const Literal* PrintUnaryNode::eval() const {
 
 const Literal* SuiteNode::eval() const {
   for (std::vector<Node*>::const_iterator it = nodes.begin(); it != nodes.end(); it++) {
-    (*it)->eval();
+    FunctionNode * func = dynamic_cast<FunctionNode *>(*it);
+    if(!func){
+    	(*it)->eval();
+    }
   }
   return nullptr;
 }
@@ -129,4 +132,12 @@ const Literal* FunctionNode::eval() const {
   suite->eval();
   TableManager::getInstance().endScopeImpl();
   return nullptr;
+}
+
+const Literal* CallNode::eval() const {
+  const Node* func = TableManager::getInstance().getFunction(ident);
+  if(func == nullptr){
+ 	throw "function not found";
+  }
+  return func->eval();
 }

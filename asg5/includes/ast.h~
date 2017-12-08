@@ -118,7 +118,7 @@ protected:
 
 class FunctionNode : public Node {
 public:
-  FunctionNode(const std::string id, Node * suiteNode, const SymbolTable* t) : 
+  FunctionNode(const std::string id, Node * suiteNode, SymbolTable* t) : 
 	Node(), name(id), 
 	suite(suiteNode), table(t) 
 	{ }
@@ -128,5 +128,5 @@ public:
 protected:
   std::string name;
   Node * suite;
-  const SymbolTable* table;
+  SymbolTable* table;
 };
