@@ -1,10 +1,9 @@
 def test():
-	print 4
+	5 + 3
 
 x = 3
 print x
 def testing():
-	test()
 	23 + x
 	j = 1 * 7.4
 	print j

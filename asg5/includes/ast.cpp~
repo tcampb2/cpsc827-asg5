@@ -10,7 +10,14 @@
 
 const Literal* IdentNode::eval() const { 
   const Literal* val = TableManager::getInstance().getValue(ident);
-  std::cout << val << std::endl;
+  if(val == nullptr){
+ 	throw "value not found";
+  }
+  else{
+	std::cout << "Val 1" << std::endl;
+	val->print();
+	std::cout << "Val 2" << std::endl;
+  }
   return val;
 }
 
@@ -122,8 +129,8 @@ const Literal* SuiteNode::eval() const {
 }
 
 const Literal* FunctionNode::eval() const {
-  TableManager::getInstance().startScope(table);
+  TableManager::getInstance().newScope(table);
   suite->eval();
-  TableManager::getInstance().endScope();
+  TableManager::getInstance().endScopeImpl();
   return nullptr;
 }

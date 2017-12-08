@@ -17,13 +17,14 @@ public:
   void     setValue(const std::string& name, const Literal* val);
   const    Literal* getValue(const std::string& name) const;
   void     newScope();
-  const	   SymbolTable * getScope();
-  void     startScope(const SymbolTable* table);
+  void     newScope(SymbolTable* oldTable);
+  SymbolTable * getScope();
   void	   endScope();
+  void	   endScopeImpl();
 private:
-  std::stack<const SymbolTable *> tableStack;
-  std::vector<const SymbolTable *> tablePool;
-  const SymbolTable * global;
+  std::stack<SymbolTable *> tableStack;
+  std::vector<SymbolTable *> tablePool;
+  SymbolTable * global;
   TableManager() : tableStack(), tablePool(), 
 	global(new SymbolTable(nullptr)) 
 	{ tableStack.push(global); tablePool.push_back(global); }

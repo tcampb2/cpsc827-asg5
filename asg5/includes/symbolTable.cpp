@@ -17,17 +17,33 @@ const Literal* SymbolTable::getValue(const std::string& name) const {
   return it->second;
 }
 
-
 void SymbolTable::setValue(const std::string& name, const Literal* val) { 
   table[name] = val;
 }
 
+const Node* SymbolTable::getFunction(const std::string& name) const {
+  std::map<std::string, const Node*>::const_iterator it = 
+    functions.find(name);
+  if ( it == functions.end() ){
+	if(parent != nullptr){
+		return parent->getFunction(name);
+	}
+	else{
+		return nullptr;
+	}
+  }
+  return it->second;
+}
+
+void SymbolTable::setFunction(const std::string& name, const Node* val) { 
+  functions[name] = val;
+}
+
 void SymbolTable::endScope() {
-  for (std::map<std::string, const Literal*>::const_iterator it = table.begin(); it != table.end(); it++) {
+  /*for (std::map<std::string, const Literal*>::const_iterator it = table.begin(); it != table.end(); it++) {
     if(it->second != nullptr){
-      //delete it->second;
       table[it->first] = nullptr;
     }
-  }
+  }*/
 }
 

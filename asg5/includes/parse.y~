@@ -78,7 +78,7 @@ funcdef // Used in: decorated, compound_stmt
 	{ $<node>$ = new FunctionNode($2, $<node>6, TableManager::getInstance().getScope());
 	TableManager::getInstance().endScope(); 
 	pool.add($<node>$);
-	//$<node>$->eval();
+	$<node>6->eval();
 	delete[] $2; }
 	;
 parameters // Used in: funcdef

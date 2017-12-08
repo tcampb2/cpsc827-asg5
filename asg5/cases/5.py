@@ -1,10 +1,9 @@
 def test():
-	print x
+	print 5 + 3
 
 x = 3
 print x
 def testing():
-	test()
 	23 + x
 	j = 1 * 7.4
 	print j
@@ -13,4 +12,4 @@ def testing():
 	#check()	
 	#r = 4
 	
-testing()
+#testing()

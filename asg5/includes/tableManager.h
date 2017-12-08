@@ -16,10 +16,13 @@ public:
   static   TableManager& getInstance();
   void     setValue(const std::string& name, const Literal* val);
   const    Literal* getValue(const std::string& name) const;
+  void     setFunction(const std::string& name, const Node* val);
+  const    Node* getFunction(const std::string& name) const;
   void     newScope();
+  void     newScope(SymbolTable* oldTable);
   SymbolTable * getScope();
-  void     startScope(SymbolTable* table);
   void	   endScope();
+  void	   endScopeImpl();
 private:
   std::stack<SymbolTable *> tableStack;
   std::vector<SymbolTable *> tablePool;

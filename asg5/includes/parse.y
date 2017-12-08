@@ -246,8 +246,6 @@ print_stmt // Used in: small_stmt
 	{ if($<node>2 != nullptr){
 		$<node>$ = new PrintUnaryNode($<node>2);
 		pool.add($<node>$);
-	  	const Literal * l = ($<node>2)->eval();
-		std::cout << l << std::endl;
 	  }
 	  else{
 		$<node>$ = $<node>2;

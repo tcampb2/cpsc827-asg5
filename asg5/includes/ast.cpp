@@ -10,7 +10,14 @@
 
 const Literal* IdentNode::eval() const { 
   const Literal* val = TableManager::getInstance().getValue(ident);
-  std::cout << val << std::endl;
+  if(val == nullptr){
+ 	throw "value not found";
+  }
+  else{
+	std::cout << "Val 1" << std::endl;
+	val->print();
+	std::cout << "Val 2" << std::endl;
+  }
   return val;
 }
 
@@ -25,8 +32,6 @@ const Literal* AsgBinaryNode::eval() const {
     throw "error";
   }
   const Literal* res = right->eval();
-  std::cout << "Assignment" << std::endl;
-  res->print();
 
   const std::string n = static_cast<IdentNode*>(left)->getIdent();
   TableManager::getInstance().setValue(n, res);
@@ -122,8 +127,8 @@ const Literal* SuiteNode::eval() const {
 }
 
 const Literal* FunctionNode::eval() const {
-  TableManager::getInstance().startScope(table);
+  TableManager::getInstance().newScope(table);
   suite->eval();
-  TableManager::getInstance().endScope();
+  TableManager::getInstance().endScopeImpl();
   return nullptr;
 }
