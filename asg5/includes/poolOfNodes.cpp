@@ -7,10 +7,7 @@ PoolOfNodes& PoolOfNodes::getInstance() {
 }
 
 void PoolOfNodes::drainThePool() {
-  //int i = 1;
   for ( const Node* node : nodePool ) {
-    //std::cout<< nodePool.size() << " " << node << std::endl;
-    //std::cout<< nodePool.size() << " " << i++ << " " << node->name() << " " << node << std::endl;
     delete node;
   }
 }

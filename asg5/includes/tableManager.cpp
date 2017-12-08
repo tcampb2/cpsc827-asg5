@@ -5,7 +5,6 @@
 
 TableManager::~TableManager() {
   for (std::vector<SymbolTable*>::const_iterator it = tablePool.begin(); it != tablePool.end(); it++) {
-    std::cout << "delete symbol table" << std::endl;
     delete *it;
   }
 }
@@ -46,12 +45,7 @@ SymbolTable * TableManager::getScope(){
   return tableStack.top();
 }
 
-/*void TableManager::startScope(SymbolTable* table){
-  tableStack.push(table);
-}*/
-
 void TableManager::endScope(){
-  tableStack.top()->endScope();
   tableStack.pop();
 }
 

@@ -8,15 +8,18 @@ def testing():
 	j = True * 7.4
 	print j
 	def check():
+		x += None
 		print 4
 		print x
+		if x!= None:
+			print x**None
 		def pre():
 			print -3*6.4
 		pre()
 	check()	
 	return 2.3**4
 	
-print testing()
+print testing() - 4
 print True
 print 7 == True
 print None != 7

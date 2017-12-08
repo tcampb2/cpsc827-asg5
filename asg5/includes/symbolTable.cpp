@@ -38,12 +38,3 @@ const Node* SymbolTable::getFunction(const std::string& name) const {
 void SymbolTable::setFunction(const std::string& name, const Node* val) {
   functions[name] = val;
 }
-
-void SymbolTable::endScope() {
-  /*for (std::map<std::string, const Literal*>::const_iterator it = table.begin(); it != table.end(); it++) {
-    if(it->second != nullptr){
-      table[it->first] = nullptr;
-    }
-  }*/
-}
-

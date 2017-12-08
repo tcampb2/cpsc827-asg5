@@ -52,7 +52,6 @@ pick_NEWLINE_stmt // Used in: star_NEWLINE_stmt
 	| stmt
 	{ FunctionNode * func = dynamic_cast<FunctionNode *>($<node>1);
 	  if(!func){
-	    std::cout << $<node>1 << " " << $<node>1->name() << std::endl; 
 	    $<node>1->eval();
 	  }
 	}
@@ -687,9 +686,7 @@ power // Used in: factor
 		if(!funcName){
 			throw "not a function";
 		}
-		std::cout << "function call" << std::endl;
 		$<node>$ = new CallNode(funcName->getIdent());
-		std::cout << "function call node" << std::endl;
 		pool.add($<node>$);
 	  }
 	}

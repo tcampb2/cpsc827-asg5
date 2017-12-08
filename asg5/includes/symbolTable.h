@@ -17,7 +17,6 @@ public:
   const Literal* getValue(const std::string& name) const;
   void  setFunction(const std::string& name, const Node* val);
   const Node* getFunction(const std::string& name) const;
-  void endScope();
 private:
   std::map<std::string, const Literal*> table;
   std::map<std::string, const Node*> functions;

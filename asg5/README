@@ -2,18 +2,21 @@ Name: Timothy Campbell
 
 Clemson Email Address: tcampb2@g.clemson.edu
 
-Project no: 4
+Project no: 5
 
-Project due date: 11/13/17
+Project due date: 12/8/17
 
-Project description: The goal of the project is to edit the MyPy parser to handle integer
-and floating point arithmetic, as well as assignment in the global scope. This is done
-by creating an abstract syntax tree. This is to further familiarize ourselves with MyPy 
-and to help prepare for when we must also include functions.
+Project description: This is an extension of the 4th project. We are required to be able to do everything
+from the previous project, and also be able to handle functions, if/else statements, and some boolean expresions.
 
-The easiest part of this project: Once I had the assignment operators and the expressions working,
-the extra forms of assignment were trivial.
+In addition to those, my program also supports elif, the None value, and the words True and False as booleans. I
+also made certain that there are no memory leaks (unless it crashes). I'm fairly certain it currently can handle
+recursion as well, since I tried making an infinite loop and the program ended with a stack overflow. Also, rather
+than only making a symbol table when a function is called, I create a symbol table when the functions are parsed,
+and then create a copy of the symbol table once the function is called that is then deleted once the function ends.
+This behavior allows me to recurse essentially for free.
 
-Problems that I had in completing this project: It took a while to figure out what each part of the parser did,
-since we were looking at a different part of the parser than in the third project. It's a bit
-weird to me how for, in, with, etc. are caught by the same rules that catch expressions in parentheses.
+The easiest part of this project: Actually making the node for the boolean expresions was practically trivial.
+
+Problems that I had in completing this project: Getting functions set up and working was definitely the hardest
+part. Once that was done, the rest of the project was much easier.
