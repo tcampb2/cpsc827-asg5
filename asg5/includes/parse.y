@@ -49,6 +49,7 @@ file_input // Used in: start
 pick_NEWLINE_stmt // Used in: star_NEWLINE_stmt
 	: NEWLINE
 	| stmt
+	{ $<node>1->eval(); }
 	;
 star_NEWLINE_stmt // Used in: file_input, star_NEWLINE_stmt
 	: star_NEWLINE_stmt pick_NEWLINE_stmt
@@ -77,7 +78,7 @@ funcdef // Used in: decorated, compound_stmt
 	{ $<node>$ = new FunctionNode($2, $<node>6, TableManager::getInstance().getScope());
 	TableManager::getInstance().endScope(); 
 	pool.add($<node>$);
-	//$<node>$->eval();
+	$<node>6->eval();
 	delete[] $2; }
 	;
 parameters // Used in: funcdef
@@ -243,9 +244,14 @@ augassign // Used in: expr_stmt
 print_stmt // Used in: small_stmt
 	: PRINT opt_test
 	{ if($<node>2 != nullptr){
-		//($<node>2)->eval()->print();
+		$<node>$ = new PrintUnaryNode($<node>2);
+		pool.add($<node>$);
+	  	const Literal * l = ($<node>2)->eval();
+		std::cout << l << std::endl;
 	  }
-	  $<node>$ = $<node>2;
+	  else{
+		$<node>$ = $<node>2;
+	  }
 	}
 	| PRINT RIGHTSHIFT test opt_test_2
 	;
@@ -452,9 +458,13 @@ suite // Used in: funcdef, if_stmt, star_ELIF, while_stmt, for_stmt, try_stmt, p
 	;
 plus_stmt // Used in: suite, plus_stmt
 	: plus_stmt stmt
-	{ }
+	{ static_cast<SuiteNode*>($<node>1)->add($<node>2);
+	  $<node>$ = $<node>1; }
 	| stmt
-	{ }
+	{ $<node>$ = new SuiteNode();
+	  pool.add($<node>$);
+	  static_cast<SuiteNode*>($<node>$)->add($<node>1);
+	}
 	;
 testlist_safe // Used in: list_for
 	: old_test plus_COMMA_old_test opt_COMMA
@@ -670,7 +680,6 @@ atom // Used in: power
 	}
 	| FLOAT		
 	{ $<node>$ = new FloatLiteral($1);
-	  std::cout << "add here" << std::endl;
 	  pool.add($<node>$); }
 	;
 pick_yield_expr_testlist_comp // Used in: opt_yield_test

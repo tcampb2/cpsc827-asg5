@@ -14,10 +14,6 @@
 extern void yyerror(const char*);
 extern void yyerror(const char*, const char);
 
-AsgBinaryNode::AsgBinaryNode(Node* left, Node* right) : 
-  BinaryNode(left, right) { 
-}
-
 class IdentNode : public Node {
 public:
   IdentNode(const std::string id) : Node(), ident(id) { } 
@@ -103,9 +99,16 @@ public:
   virtual const Literal* eval() const;
 };
 
+class PrintUnaryNode : public UnaryNode {
+public:
+  PrintUnaryNode(Node* node) : UnaryNode(node) { }
+  virtual const Literal* eval() const;
+};
+
 class SuiteNode : public Node {
 public:
   SuiteNode() : Node(), nodes() {}
+  void add(Node* n) { nodes.push_back(n); }
   virtual const Literal* eval() const;
   SuiteNode(const SuiteNode&) = delete;
   SuiteNode& operator=(const SuiteNode&) = delete;

@@ -4,7 +4,7 @@
 #include "literal.h"
 
 TableManager::~TableManager() {
-  for (std::vector<SymbolTable*>::const_iterator it = tablePool.begin(); it != tablePool.end(); it++) {
+  for (std::vector<const SymbolTable*>::const_iterator it = tablePool.begin(); it != tablePool.end(); it++) {
     { std::cout << "delete symbol table" << std::endl; }
     delete *it;
   }
@@ -33,7 +33,7 @@ const SymbolTable * TableManager::getScope(){
 	return tableStack.top();
 }
 
-void TableManager::startScope(SymbolTable* table){
+void TableManager::startScope(const SymbolTable* table){
   tableStack.push(table);
 }
 

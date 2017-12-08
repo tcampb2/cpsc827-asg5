@@ -99,9 +99,16 @@ public:
   virtual const Literal* eval() const;
 };
 
+class PrintUnaryNode : public UnaryNode {
+public:
+  PrintUnaryNode(Node* node) : UnaryNode(node) { }
+  virtual const Literal* eval() const;
+};
+
 class SuiteNode : public Node {
 public:
   SuiteNode() : Node(), nodes() {}
+  void add(Node* n) { nodes.push_back(n); }
   virtual const Literal* eval() const;
   SuiteNode(const SuiteNode&) = delete;
   SuiteNode& operator=(const SuiteNode&) = delete;
@@ -111,7 +118,7 @@ protected:
 
 class FunctionNode : public Node {
 public:
-  FunctionNode(const std::string id, Node * suiteNode, const SymbolTable* t) : 
+  FunctionNode(const std::string id, Node * suiteNode, SymbolTable* t) : 
 	Node(), name(id), 
 	suite(suiteNode), table(t) 
 	{ }
@@ -121,5 +128,5 @@ public:
 protected:
   std::string name;
   Node * suite;
-  const SymbolTable* table;
+  SymbolTable* table;
 };

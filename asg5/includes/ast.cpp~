@@ -10,6 +10,7 @@
 
 const Literal* IdentNode::eval() const { 
   const Literal* val = TableManager::getInstance().getValue(ident);
+  std::cout << val << std::endl;
   return val;
 }
 
@@ -24,6 +25,8 @@ const Literal* AsgBinaryNode::eval() const {
     throw "error";
   }
   const Literal* res = right->eval();
+  std::cout << "Assignment" << std::endl;
+  res->print();
 
   const std::string n = static_cast<IdentNode*>(left)->getIdent();
   TableManager::getInstance().setValue(n, res);
@@ -102,11 +105,25 @@ const Literal* MinUnaryNode::eval() const {
   return ((*x).negate());
 }
 
+const Literal* PrintUnaryNode::eval() const { 
+  if (!node) {
+    throw "error";
+  }
+  const Literal* x = node->eval();
+  x->print();
+  return x;
+}
+
 const Literal* SuiteNode::eval() const {
+  for (std::vector<Node*>::const_iterator it = nodes.begin(); it != nodes.end(); it++) {
+    (*it)->eval();
+  }
   return nullptr;
 }
 
 const Literal* FunctionNode::eval() const {
+  TableManager::getInstance().startScope(table);
+  suite->eval();
   TableManager::getInstance().endScope();
   return nullptr;
 }

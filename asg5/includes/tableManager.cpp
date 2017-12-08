@@ -29,7 +29,7 @@ void TableManager::newScope(){
 	tableStack.push(newTable);
 }
 
-const SymbolTable * TableManager::getScope(){
+SymbolTable * TableManager::getScope(){
 	return tableStack.top();
 }
 
