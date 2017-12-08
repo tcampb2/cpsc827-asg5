@@ -1,13 +1,11 @@
 x = 3
 def testing():
-	j = 1 * 7
-	print j
-	def check():
-		print x
-	check()	
-	#print x
-	r = 4
-	return
-	x = 4
+	23 + x
+	j = 1 * 7.4
+	6
+	#def check():
+	#	print x
+	#check()	
+	#r = 4
 	
-testing()
+#testing()

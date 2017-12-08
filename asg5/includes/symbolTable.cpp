@@ -36,10 +36,11 @@ void SymbolTable::setValue(const std::string& name, const Literal* val) {
 }
 
 void SymbolTable::endScope() {
-  for (std::map<std::string, const Literal*>::const_iterator it = table.begin(); it != table.end();) {
-    delete it->second;
-    table.erase(it);
+  for (std::map<std::string, const Literal*>::const_iterator it = table.begin(); it != table.end(); it++) {
+    if(it->second != nullptr){
+      //delete it->second;
+      table[it->first] = nullptr;
+    }
   }
-  table.clear();
 }
 

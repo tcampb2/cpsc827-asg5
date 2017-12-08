@@ -5,6 +5,7 @@
 
 TableManager::~TableManager() {
   for (std::vector<SymbolTable*>::const_iterator it = tablePool.begin(); it != tablePool.end(); it++) {
+    { std::cout << "delete symbol table" << std::endl; }
     delete *it;
   }
 }
@@ -22,17 +23,14 @@ void TableManager::setValue(const std::string& name, const Literal* val) {
   tableStack.top()->setValue(name, val);
 }
 
-SymbolTable * TableManager::newScope(SymbolTable * table){
-	if(table == nullptr){
-		SymbolTable * newTable = new SymbolTable(global);
-		tablePool.push_back(newTable);
-		return newTable;
-	}
-	else{
-		SymbolTable * newTable = new SymbolTable(table);
-		tablePool.push_back(newTable);
-		return newTable;
-	}
+void TableManager::newScope(){
+	SymbolTable * newTable = new SymbolTable(tableStack.top());
+	tablePool.push_back(newTable);
+	tableStack.push(newTable);
+}
+
+const SymbolTable * TableManager::getScope(){
+	return tableStack.top();
 }
 
 void TableManager::startScope(SymbolTable* table){

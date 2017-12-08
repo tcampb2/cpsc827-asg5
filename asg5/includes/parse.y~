@@ -184,8 +184,8 @@ expr_stmt // Used in: small_stmt
 	}
 	| testlist star_EQUAL 
 	{ if(($<node>1 != nullptr) && ($<node>2 != nullptr)){
-              $<node>$ = new AsgBinaryNode($<node>1, $<node>2);
-              pool.add($<node>$);
+              //$<node>$ = new AsgBinaryNode($<node>1, $<node>2);
+              //pool.add($<node>$);
 	      //$<node>$->eval();
 	  }
 	  else {

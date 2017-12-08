@@ -231,8 +231,7 @@ public:
   virtual const Literal* operator*(const Literal& rhs) const  {
     return rhs.opMult(val);
   }
-  virtual const Literal* opMult(float lhs) const  { 
-    std::cout<< "mult" << std::endl;
+  virtual const Literal* opMult(float lhs) const  {
     const Literal* node = new FloatLiteral(lhs * val);
     PoolOfNodes::getInstance().add(node);
     return node;
