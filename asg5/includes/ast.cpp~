@@ -14,26 +14,22 @@ const Literal* IdentNode::eval() const {
  	throw "value not found";
   }
   else{
-	std::cout << "Val 1" << std::endl;
+	/*std::cout << "Val 1" << std::endl;
 	val->print();
-	std::cout << "Val 2" << std::endl;
+	std::cout << "Val 2" << std::endl;*/
   }
   return val;
 }
 
-
 AsgBinaryNode::AsgBinaryNode(Node* left, Node* right) : 
   BinaryNode(left, right) { 
 }
-
 
 const Literal* AsgBinaryNode::eval() const { 
   if (!left || !right) {
     throw "error";
   }
   const Literal* res = right->eval();
-  std::cout << "Assignment" << std::endl;
-  res->print();
 
   const std::string n = static_cast<IdentNode*>(left)->getIdent();
   TableManager::getInstance().setValue(n, res);
@@ -117,7 +113,6 @@ const Literal* PrintUnaryNode::eval() const {
     throw "error";
   }
   const Literal* x = node->eval();
-  x->print();
   return x;
 }
 

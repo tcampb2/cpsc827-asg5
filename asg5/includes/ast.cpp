@@ -14,18 +14,16 @@ const Literal* IdentNode::eval() const {
  	throw "value not found";
   }
   else{
-	std::cout << "Val 1" << std::endl;
+	/*std::cout << "Val 1" << std::endl;
 	val->print();
-	std::cout << "Val 2" << std::endl;
+	std::cout << "Val 2" << std::endl;*/
   }
   return val;
 }
 
-
 AsgBinaryNode::AsgBinaryNode(Node* left, Node* right) : 
   BinaryNode(left, right) { 
 }
-
 
 const Literal* AsgBinaryNode::eval() const { 
   if (!left || !right) {

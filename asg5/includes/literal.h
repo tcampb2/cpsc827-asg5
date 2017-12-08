@@ -198,7 +198,7 @@ private:
 
 class IntLiteral: public Literal {
 public:
- IntLiteral(int _val): val(_val) { std::cout<< _val << " value of int" << std::endl;}
+ IntLiteral(int _val): val(_val) {}
 
   virtual const Literal* operator+(const Literal& rhs) const  {
     return rhs.opPlus(val);

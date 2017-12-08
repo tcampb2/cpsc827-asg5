@@ -49,7 +49,11 @@ file_input // Used in: start
 pick_NEWLINE_stmt // Used in: star_NEWLINE_stmt
 	: NEWLINE
 	| stmt
-	{ $<node>1->eval(); }
+	{ FunctionNode * func = dynamic_cast<FunctionNode *>($<node>1);
+	  if(!func){
+	    std::cout << $<node>1 << " " << $<node>1->name() << std::endl; $<node>1->eval();
+	  }
+	}//$<node>1->eval(); }
 	;
 star_NEWLINE_stmt // Used in: file_input, star_NEWLINE_stmt
 	: star_NEWLINE_stmt pick_NEWLINE_stmt
@@ -78,7 +82,8 @@ funcdef // Used in: decorated, compound_stmt
 	{ $<node>$ = new FunctionNode($2, $<node>6, TableManager::getInstance().getScope());
 	TableManager::getInstance().endScope(); 
 	pool.add($<node>$);
-	$<node>6->eval();
+	TableManager::getInstance().setFunction($2, $<node>6);
+	//$<node>6->eval();
 	delete[] $2; }
 	;
 parameters // Used in: funcdef
@@ -129,14 +134,12 @@ star_fpdef_notest // Used in: fplist, star_fpdef_notest
 	;
 stmt // Used in: pick_NEWLINE_stmt, plus_stmt
 	: simple_stmt
-	{ //if(TableManager::getInstance().getValue("j") != nullptr){TableManager::getInstance().getValue("j")->print();}
-	 }//$<node>1->eval()->print(); }
+	{ $<node>$ = $<node>1; }
 	| compound_stmt
 	;
 simple_stmt // Used in: stmt, suite
 	: small_stmt star_SEMI_small_stmt SEMI NEWLINE
 	| small_stmt star_SEMI_small_stmt NEWLINE
-	//{ std::cout << $<node>1 << " fds" << std::endl; }
 	;
 star_SEMI_small_stmt // Used in: simple_stmt, star_SEMI_small_stmt
 	: star_SEMI_small_stmt SEMI small_stmt
@@ -144,7 +147,6 @@ star_SEMI_small_stmt // Used in: simple_stmt, star_SEMI_small_stmt
 	;
 small_stmt // Used in: simple_stmt, star_SEMI_small_stmt
 	: expr_stmt
-	//{ std::cout << $<node>$->eval() << " fdds" << std::endl; }
 	| print_stmt
 	| del_stmt
 	| pass_stmt
@@ -187,10 +189,8 @@ expr_stmt // Used in: small_stmt
 	{ if(($<node>1 != nullptr) && ($<node>2 != nullptr)){
               $<node>$ = new AsgBinaryNode($<node>1, $<node>2);
               pool.add($<node>$);
-	      //$<node>$->eval();
 	  }
 	  else {
-	     //($<node>1)->eval()->print();
 	     $<node>$ = $<node>1;
 	  }
 	}
@@ -246,8 +246,6 @@ print_stmt // Used in: small_stmt
 	{ if($<node>2 != nullptr){
 		$<node>$ = new PrintUnaryNode($<node>2);
 		pool.add($<node>$);
-	  	const Literal * l = ($<node>2)->eval();
-		std::cout << l << std::endl;
 	  }
 	  else{
 		$<node>$ = $<node>2;
@@ -454,7 +452,6 @@ suite // Used in: funcdef, if_stmt, star_ELIF, while_stmt, for_stmt, try_stmt, p
 	{ $<node>$ = nullptr; }
 	| NEWLINE INDENT plus_stmt DEDENT
 	{ $<node>$ = $<node>3; }
-	 // $<node>3->eval()->print();}
 	;
 plus_stmt // Used in: suite, plus_stmt
 	: plus_stmt stmt
