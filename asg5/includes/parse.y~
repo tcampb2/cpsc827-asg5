@@ -301,6 +301,9 @@ continue_stmt // Used in: flow_stmt
 	;
 return_stmt // Used in: flow_stmt
 	: RETURN testlist
+	{ $<node>$ = new ReturnUnaryNode($<node>2);
+	  pool.add($<node>$);
+	}
 	| RETURN
 	{ NoneLiteral * none = new NoneLiteral();
 	  pool.add(none);
@@ -525,16 +528,32 @@ comparison // Used in: not_test, comparison
 	: expr 
 	{ $<node>$ = $<node>1; }
 	| comparison comp_op expr
-	{ $<node>$ = nullptr; }
+	{ switch($<intNumber>2){
+		case 0: $<node>$ = new LtBinaryNode($<node>1, $<node>3); break;
+		case 1: $<node>$ = new GtBinaryNode($<node>1, $<node>3); break;
+		case 2: $<node>$ = new EqEqBinaryNode($<node>1, $<node>3); break;
+		case 3: $<node>$ = new GtEqBinaryNode($<node>1, $<node>3); break;
+		case 4: $<node>$ = new LtEqBinaryNode($<node>1, $<node>3); break;
+        	default: $<node>$ = new NEqBinaryNode($<node>1, $<node>3);
+        		 
+	  }
+	  pool.add($<node>$);
+	}
 	;
 comp_op // Used in: comparison
 	: LESS
+	{ $<intNumber>$ = 0; }
 	| GREATER
+	{ $<intNumber>$ = 1; }
 	| EQEQUAL
+	{ $<intNumber>$ = 2; }
 	| GREATEREQUAL
+	{ $<intNumber>$ = 3; }
 	| LESSEQUAL
+	{ $<intNumber>$ = 4; }
 	| GRLT
 	| NOTEQUAL
+	{ $<intNumber>$ = 5; }
 	| IN
 	| NOT IN
 	| IS
@@ -683,6 +702,12 @@ atom // Used in: power
 	{ std::string s = $1;
 	  if(s == "None"){
 		$<node>$ = new NoneLiteral();
+	  }
+	  else if(s == "True"){
+		$<node>$ = new BoolLiteral(1);
+	  }
+	  else if(s == "False"){
+		$<node>$ = new BoolLiteral(0);
 	  }
 	  else{
 		$<node>$ = new IdentNode($1);

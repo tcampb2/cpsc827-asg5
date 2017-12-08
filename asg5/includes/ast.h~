@@ -93,6 +93,42 @@ public:
   virtual const Literal* eval() const;
 };
 
+class GtBinaryNode : public BinaryNode {
+public:
+  GtBinaryNode(Node* left, Node* right) : BinaryNode(left, right) { }
+  virtual const Literal* eval() const;
+};
+
+class LtBinaryNode : public BinaryNode {
+public:
+  LtBinaryNode(Node* left, Node* right) : BinaryNode(left, right) { }
+  virtual const Literal* eval() const;
+};
+
+class GtEqBinaryNode : public BinaryNode {
+public:
+  GtEqBinaryNode(Node* left, Node* right) : BinaryNode(left, right) { }
+  virtual const Literal* eval() const;
+};
+
+class LtEqBinaryNode : public BinaryNode {
+public:
+  LtEqBinaryNode(Node* left, Node* right) : BinaryNode(left, right) { }
+  virtual const Literal* eval() const;
+};
+
+class EqEqBinaryNode : public BinaryNode {
+public:
+  EqEqBinaryNode(Node* left, Node* right) : BinaryNode(left, right) { }
+  virtual const Literal* eval() const;
+};
+
+class NEqBinaryNode : public BinaryNode {
+public:
+  NEqBinaryNode(Node* left, Node* right) : BinaryNode(left, right) { }
+  virtual const Literal* eval() const;
+};
+
 class MinUnaryNode : public UnaryNode {
 public:
   MinUnaryNode(Node* node) : UnaryNode(node) { }
@@ -107,7 +143,7 @@ public:
 
 class ReturnUnaryNode : public UnaryNode {
 public:
-  ReturnNode(Node* node) : UnaryNode(node) { }
+  ReturnUnaryNode(Node* node) : UnaryNode(node) { }
   virtual const Literal* eval() const;
 };
 

@@ -6,6 +6,30 @@ class Literal : public Node {
 public:
   virtual ~Literal() {}
 
+  virtual bool operator>(const Literal&) const =0;
+  virtual bool opGt(float) const =0;
+  virtual bool opGt(int) const =0;
+
+  virtual bool operator<(const Literal&) const =0;
+  virtual bool opLt(float) const =0;
+  virtual bool opLt(int) const =0;
+
+  virtual bool operator>=(const Literal&) const =0;
+  virtual bool opGtEq(float) const =0;
+  virtual bool opGtEq(int) const =0;
+
+  virtual bool operator<=(const Literal&) const =0;
+  virtual bool opLtEq(float) const =0;
+  virtual bool opLtEq(int) const =0;
+
+  virtual bool operator==(const Literal&) const =0;
+  virtual bool opEqEq(float) const =0;
+  virtual bool opEqEq(int) const =0;
+
+  virtual bool operator!=(const Literal&) const =0;
+  virtual bool opNEq(float) const =0;
+  virtual bool opNEq(int) const =0;
+
   virtual const Literal* operator+(const Literal&) const =0;
   virtual const Literal* opPlus(float) const =0;
   virtual const Literal* opPlus(int) const =0;
@@ -33,7 +57,7 @@ public:
   virtual const Literal* operator%(const Literal&) const =0;
   virtual const Literal* opMod(float) const =0;
   virtual const Literal* opMod(int) const =0;
-  
+
   virtual const Literal* negate() const =0;
 
   virtual const Literal* eval() const = 0;
@@ -45,6 +69,66 @@ public:
 class FloatLiteral: public Literal {
 public:
   FloatLiteral(float _val): val(_val) {}
+
+  virtual bool operator>(const Literal& rhs) const{
+    return rhs.opGt(val);
+  }
+  virtual bool opGt(float lhs) const  {
+    return lhs > val;
+  }
+  virtual bool opGt(int lhs) const  {
+    return lhs > val;
+  }
+
+  virtual bool operator<(const Literal& rhs) const{
+    return rhs.opLt(val);
+  }
+  virtual bool opLt(float lhs) const  {
+    return lhs < val;
+  }
+  virtual bool opLt(int lhs) const  {
+    return lhs < val;
+  }
+
+  virtual bool operator>=(const Literal& rhs) const{
+    return rhs.opGtEq(val);
+  }
+  virtual bool opGtEq(float lhs) const  {
+    return lhs >= val;
+  }
+  virtual bool opGtEq(int lhs) const  {
+    return lhs >= val;
+  }
+
+  virtual bool operator<=(const Literal& rhs) const{
+    return rhs.opLtEq(val);
+  }
+  virtual bool opLtEq(float lhs) const  {
+    return lhs <= val;
+  }
+  virtual bool opLtEq(int lhs) const  {
+    return lhs <= val;
+  }
+
+  virtual bool operator==(const Literal& rhs) const{
+    return rhs.opEqEq(val);
+  }
+  virtual bool opEqEq(float lhs) const  {
+    return lhs == val;
+  }
+  virtual bool opEqEq(int lhs) const  {
+    return lhs == val;
+  }
+
+  virtual bool operator!=(const Literal& rhs) const{
+    return rhs.opNEq(val);
+  }
+  virtual bool opNEq(float lhs) const  {
+    return lhs != val;
+  }
+  virtual bool opNEq(int lhs) const  {
+    return lhs != val;
+  }
 
   virtual const Literal* operator+(const Literal& rhs) const  {
     return rhs.opPlus(val);
@@ -199,6 +283,66 @@ private:
 class IntLiteral: public Literal {
 public:
   IntLiteral(int _val): val(_val) {}
+
+  virtual bool operator>(const Literal& rhs) const{
+    return rhs.opGt(val);
+  }
+  virtual bool opGt(float lhs) const  {
+    return lhs > val;
+  }
+  virtual bool opGt(int lhs) const  {
+    return lhs > val;
+  }
+
+  virtual bool operator<(const Literal& rhs) const{
+    return rhs.opLt(val);
+  }
+  virtual bool opLt(float lhs) const  {
+    return lhs < val;
+  }
+  virtual bool opLt(int lhs) const  {
+    return lhs < val;
+  }
+
+  virtual bool operator>=(const Literal& rhs) const{
+    return rhs.opGtEq(val);
+  }
+  virtual bool opGtEq(float lhs) const  {
+    return lhs >= val;
+  }
+  virtual bool opGtEq(int lhs) const  {
+    return lhs >= val;
+  }
+
+  virtual bool operator<=(const Literal& rhs) const{
+    return rhs.opLtEq(val);
+  }
+  virtual bool opLtEq(float lhs) const  {
+    return lhs <= val;
+  }
+  virtual bool opLtEq(int lhs) const  {
+    return lhs <= val;
+  }
+
+  virtual bool operator==(const Literal& rhs) const{
+    return rhs.opEqEq(val);
+  }
+  virtual bool opEqEq(float lhs) const  {
+    return lhs == val;
+  }
+  virtual bool opEqEq(int lhs) const  {
+    return lhs == val;
+  }
+
+  virtual bool operator!=(const Literal& rhs) const{
+    return rhs.opNEq(val);
+  }
+  virtual bool opNEq(float lhs) const  {
+    return lhs != val;
+  }
+  virtual bool opNEq(int lhs) const  {
+    return lhs != val;
+  }
 
   virtual const Literal* operator+(const Literal& rhs) const  {
     return rhs.opPlus(val);
@@ -359,13 +503,66 @@ public:
   virtual void print() const { 
     std::cout << "INT: " << val << std::endl;
   }
-private:
+protected:
   int val;
+};
+
+class BoolLiteral: public IntLiteral {
+public:
+  BoolLiteral(int _val): IntLiteral(_val) {}
+
+  virtual const Literal* eval() const {
+    return this; 
+  }
+  virtual void print() const {
+    if(val == 0){
+	std::cout << "False" << std::endl;
+    }
+    else{
+	std::cout << "True" << std::endl;
+    }
+  }
 };
 
 class NoneLiteral: public Literal{
 public:
   NoneLiteral() {}
+
+  virtual bool operator>(const Literal&) const{ return false; }
+  virtual bool opGt(float) const  { return false; }
+  virtual bool opGt(int) const  { return false; }
+
+  virtual bool operator<(const Literal&) const{ return false; }
+  virtual bool opLt(float) const  { return false; }
+  virtual bool opLt(int) const  { return false; }
+
+  virtual bool operator>=(const Literal& rhs) const{
+	const NoneLiteral * none = dynamic_cast<const NoneLiteral *>(&rhs); 
+	return !(!(none)); 
+  }
+  virtual bool opGtEq(float) const  { return false; }
+  virtual bool opGtEq(int) const  { return false; }
+
+  virtual bool operator<=(const Literal& rhs) const{
+	const NoneLiteral * none = dynamic_cast<const NoneLiteral *>(&rhs); 
+	return !(!(none)); 
+  }
+  virtual bool opLtEq(float) const  { return false; }
+  virtual bool opLtEq(int) const  { return false; }
+
+  virtual bool operator==(const Literal& rhs) const{
+	const NoneLiteral * none = dynamic_cast<const NoneLiteral *>(&rhs); 
+	return !(!(none)); 
+  }
+  virtual bool opEqEq(float) const  { return false; }
+  virtual bool opEqEq(int) const  { return false; }
+
+  virtual bool operator!=(const Literal& rhs) const{
+	const NoneLiteral * none = dynamic_cast<const NoneLiteral *>(&rhs); 
+	return !(none); 
+  }
+  virtual bool opNEq(float) const  { return true; }
+  virtual bool opNEq(int) const  { return true; }
 
   virtual const Literal* operator+(const Literal&) const {return this;}
   virtual const Literal* opPlus(float) const {return this;}

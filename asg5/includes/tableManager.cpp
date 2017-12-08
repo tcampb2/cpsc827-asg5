@@ -5,7 +5,7 @@
 
 TableManager::~TableManager() {
   for (std::vector<SymbolTable*>::const_iterator it = tablePool.begin(); it != tablePool.end(); it++) {
-    { std::cout << "delete symbol table" << std::endl; }
+    std::cout << "delete symbol table" << std::endl;
     delete *it;
   }
 }
@@ -32,18 +32,18 @@ void TableManager::setFunction(const std::string& name, const Node* val) {
 }
 
 void TableManager::newScope(){
-	SymbolTable * newTable = new SymbolTable(tableStack.top());
-	tablePool.push_back(newTable);
-	tableStack.push(newTable);
+  SymbolTable * newTable = new SymbolTable(tableStack.top());
+  tablePool.push_back(newTable);
+  tableStack.push(newTable);
 }
 
 void TableManager::newScope(SymbolTable * oldTable){
-	SymbolTable * newTable = new SymbolTable(*oldTable);
-	tableStack.push(newTable);
+  SymbolTable * newTable = new SymbolTable(*oldTable);
+  tableStack.push(newTable);
 }
 
 SymbolTable * TableManager::getScope(){
-	return tableStack.top();
+  return tableStack.top();
 }
 
 /*void TableManager::startScope(SymbolTable* table){

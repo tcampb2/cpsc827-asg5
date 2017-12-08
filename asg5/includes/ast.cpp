@@ -100,6 +100,72 @@ const Literal* ModBinaryNode::eval() const {
   return ((*x)%(*y));
 }
 
+const Literal* GtBinaryNode::eval() const { 
+  if (!left || !right) {
+    throw "error";
+  }
+  const Literal* x = left->eval();
+  const Literal* y = right->eval();
+  BoolLiteral* answer = new BoolLiteral((*x)>(*y));
+  PoolOfNodes::getInstance().add(answer);
+  return answer;
+}
+
+const Literal* LtBinaryNode::eval() const { 
+  if (!left || !right) {
+    throw "error";
+  }
+  const Literal* x = left->eval();
+  const Literal* y = right->eval();
+  BoolLiteral* answer = new BoolLiteral((*x)<(*y));
+  PoolOfNodes::getInstance().add(answer);
+  return answer;
+}
+
+const Literal* GtEqBinaryNode::eval() const { 
+  if (!left || !right) {
+    throw "error";
+  }
+  const Literal* x = left->eval();
+  const Literal* y = right->eval();
+  BoolLiteral* answer = new BoolLiteral((*x)>=(*y));
+  PoolOfNodes::getInstance().add(answer);
+  return answer;
+}
+
+const Literal* LtEqBinaryNode::eval() const { 
+  if (!left || !right) {
+    throw "error";
+  }
+  const Literal* x = left->eval();
+  const Literal* y = right->eval();
+  BoolLiteral* answer = new BoolLiteral((*x)<=(*y));
+  PoolOfNodes::getInstance().add(answer);
+  return answer;
+}
+
+const Literal* EqEqBinaryNode::eval() const { 
+  if (!left || !right) {
+    throw "error";
+  }
+  const Literal* x = left->eval();
+  const Literal* y = right->eval();
+  BoolLiteral* answer = new BoolLiteral((*x)==(*y));
+  PoolOfNodes::getInstance().add(answer);
+  return answer;
+}
+
+const Literal* NEqBinaryNode::eval() const { 
+  if (!left || !right) {
+    throw "error";
+  }
+  const Literal* x = left->eval();
+  const Literal* y = right->eval();
+  BoolLiteral* answer = new BoolLiteral((*x)!=(*y));
+  PoolOfNodes::getInstance().add(answer);
+  return answer;
+}
+
 const Literal* MinUnaryNode::eval() const { 
   if (!node) {
     throw "error";
