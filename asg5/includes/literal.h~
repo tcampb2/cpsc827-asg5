@@ -6,6 +6,8 @@ class Literal : public Node {
 public:
   virtual ~Literal() {}
 
+  virtual bool getBool() const =0;
+
   virtual bool operator>(const Literal&) const =0;
   virtual bool opGt(float) const =0;
   virtual bool opGt(int) const =0;
@@ -69,6 +71,15 @@ public:
 class FloatLiteral: public Literal {
 public:
   FloatLiteral(float _val): val(_val) {}
+
+  virtual bool getBool() const { 
+    if(val == 0){
+	return false;
+    }
+    else{
+	return true;
+    }
+  }
 
   virtual bool operator>(const Literal& rhs) const{
     return rhs.opGt(val);
@@ -284,6 +295,15 @@ class IntLiteral: public Literal {
 public:
   IntLiteral(int _val): val(_val) {}
 
+  virtual bool getBool() const { 
+    if(val == 0){
+	return false;
+    }
+    else{
+	return true;
+    }
+  }
+
   virtual bool operator>(const Literal& rhs) const{
     return rhs.opGt(val);
   }
@@ -375,8 +395,7 @@ public:
   virtual const Literal* operator*(const Literal& rhs) const  {
     return rhs.opMult(val);
   }
-  virtual const Literal* opMult(float lhs) const  { 
-    std::cout<< "mult" << std::endl;
+  virtual const Literal* opMult(float lhs) const  {
     const Literal* node = new FloatLiteral(lhs * val);
     PoolOfNodes::getInstance().add(node);
     return node;
@@ -511,6 +530,15 @@ class BoolLiteral: public IntLiteral {
 public:
   BoolLiteral(int _val): IntLiteral(_val) {}
 
+  virtual bool getBool() const { 
+    if(val == 0){
+	return false;
+    }
+    else{
+	return true;
+    }
+  }
+
   virtual const Literal* eval() const {
     return this; 
   }
@@ -527,6 +555,8 @@ public:
 class NoneLiteral: public Literal{
 public:
   NoneLiteral() {}
+
+  virtual bool getBool() const { return false; }
 
   virtual bool operator>(const Literal&) const{ return false; }
   virtual bool opGt(float) const  { return false; }

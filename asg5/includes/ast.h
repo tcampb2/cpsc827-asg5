@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <deque>
 #include "literal.h"
 #include "symbolTable.h"
 #include "tableManager.h"
@@ -147,6 +148,12 @@ public:
   virtual const Literal* eval() const;
 };
 
+class BoolCheckUnaryNode : public UnaryNode {
+public:
+  BoolCheckUnaryNode(Node* node) : UnaryNode(node) { }
+  virtual const Literal* eval() const;
+};
+
 class SuiteNode : public Node {
 public:
   SuiteNode() : Node(), nodes() {}
@@ -181,4 +188,21 @@ public:
   virtual const Literal* eval() const;
 private:
   std::string ident;
+};
+
+class IfNode : public Node {
+public:
+  IfNode() : Node(), testNodes(), suiteNodes(), elseNode() { } 
+  void addTest(Node* n) { testNodes.push_back(n); }
+  void firstTest(Node* n) { testNodes.push_front(n); }
+  void addSuite(Node* n) { suiteNodes.push_back(n); }
+  void firstSuite(Node* n) { suiteNodes.push_front(n); }
+  void addElse(Node* n) { elseNode = n; }
+  virtual const Literal* eval() const;
+  IfNode(const IfNode&) = delete;
+  IfNode& operator=(const IfNode&) = delete;
+private:
+  std::deque<Node *> testNodes;
+  std::deque<Node *> suiteNodes;
+  Node* elseNode;
 };

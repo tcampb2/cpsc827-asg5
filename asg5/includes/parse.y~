@@ -55,7 +55,7 @@ pick_NEWLINE_stmt // Used in: star_NEWLINE_stmt
 	    std::cout << $<node>1 << " " << $<node>1->name() << std::endl; 
 	    $<node>1->eval();
 	  }
-	}//$<node>1->eval(); }
+	}
 	;
 star_NEWLINE_stmt // Used in: file_input, star_NEWLINE_stmt
 	: star_NEWLINE_stmt pick_NEWLINE_stmt
@@ -85,7 +85,6 @@ funcdef // Used in: decorated, compound_stmt
 	TableManager::getInstance().endScope(); 
 	pool.add($<node>$);
 	TableManager::getInstance().setFunction($2, $<node>$);
-	//$<node>6->eval();
 	delete[] $2; }
 	;
 parameters // Used in: funcdef
@@ -179,9 +178,8 @@ expr_stmt // Used in: small_stmt
 				
 		}
 		$<node>$ = new AsgBinaryNode($<node>1, temp);
+		pool.add(temp);
         	pool.add($<node>$);
-		//$<node>$->eval();
-		delete temp;
 	  }
 	  else{
 		$<node>$ = nullptr;
@@ -403,11 +401,34 @@ compound_stmt // Used in: stmt
 	;
 if_stmt // Used in: compound_stmt
 	: IF test COLON suite star_ELIF ELSE COLON suite
+	{ $<node>2 = new BoolCheckUnaryNode($<node>2);
+	  pool.add($<node>2);
+	  static_cast<IfNode*>($<node>5)->firstTest($<node>2);
+	  static_cast<IfNode*>($<node>5)->firstSuite($<node>4);
+	  static_cast<IfNode*>($<node>5)->addElse($<node>8);
+	  $<node>$ = $<node>5;  
+	}
 	| IF test COLON suite star_ELIF
+	{ $<node>2 = new BoolCheckUnaryNode($<node>2);
+	  pool.add($<node>2);
+	  static_cast<IfNode*>($<node>5)->firstTest($<node>2);
+	  static_cast<IfNode*>($<node>5)->firstSuite($<node>4);
+	  static_cast<IfNode*>($<node>5)->addElse(nullptr);
+	  $<node>$ = $<node>5; 
+	}
 	;
 star_ELIF // Used in: if_stmt, star_ELIF
 	: star_ELIF ELIF test COLON suite
+	{ $<node>3 = new BoolCheckUnaryNode($<node>3);
+	  pool.add($<node>3);
+	  static_cast<IfNode*>($<node>1)->addTest($<node>3);
+	  static_cast<IfNode*>($<node>1)->addSuite($<node>5);
+	  $<node>$ = $<node>1; 
+	}
 	| %empty
+	{ $<node>$ = new IfNode();
+	  pool.add($<node>$);
+	}
 	;
 while_stmt // Used in: compound_stmt
 	: WHILE test COLON suite ELSE COLON suite

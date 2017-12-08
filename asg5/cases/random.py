@@ -10,6 +10,9 @@ def testing():
 	def check():
 		print 4
 		print x
+		def pre():
+			print -3*6.4
+		pre()
 	check()	
 	return 2.3**4
 	

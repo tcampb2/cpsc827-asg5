@@ -66,10 +66,6 @@ int main(int argc, char * argv[]) {
     std::cout << "oops: " << msg << std::endl;
     parse_had_errors = 1;
   }
-  catch ( std::string msg ) {
-    std::cout << "oops: " << msg << std::endl;
-    parse_had_errors = 1;
-  }
   fclose(input_file);
   PoolOfNodes::getInstance().drainThePool();
   free_scanner();

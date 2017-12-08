@@ -190,9 +190,15 @@ const Literal* ReturnUnaryNode::eval() const {
   return node->eval();
 }
 
+const Literal* BoolCheckUnaryNode::eval() const { 
+  if (!node) {
+    throw "error";
+  }
+  return node->eval();
+}
+
 const Literal* SuiteNode::eval() const {
   for (std::vector<Node*>::const_iterator it = nodes.begin(); it != nodes.end(); it++) {
-    std::cout << (*it)->name() << std::endl;
     FunctionNode * func = dynamic_cast<FunctionNode *>(*it);
     if(!func){
 	ReturnUnaryNode * ret = dynamic_cast<ReturnUnaryNode *>(*it);
@@ -222,4 +228,20 @@ const Literal* CallNode::eval() const {
  	throw "function not found";
   }
   return func->eval();
+}
+
+const Literal* IfNode::eval() const {
+  int i = 0;
+  for (std::deque<Node*>::const_iterator it = testNodes.begin(); it != testNodes.end(); it++) {
+  	if((*it)->eval()->getBool()){
+		return suiteNodes[i]->eval();
+	}
+	i++;
+  }
+  if(elseNode != nullptr){
+	return elseNode->eval();
+  }
+  const Literal* none = new NoneLiteral();
+  PoolOfNodes::getInstance().add(none);
+  return none;
 }
